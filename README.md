@@ -32,3 +32,9 @@ And goto your web browser to see the TV!
 
 - Add button to play can opening-sound to aquire cat
 - Add button to deliver treat
+- Kill raspistill program when turned off
+
+
+# Bugs
+
+Watch out for when you exit a program, the spawned ``raspistill`` process will be in the backgournd!
