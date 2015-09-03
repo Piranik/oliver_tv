@@ -30,9 +30,9 @@ And goto your web browser to see the TV!
 
 # To-do
 
+- ~Kill raspistill program when turned off~
 - Add button to play can opening-sound to aquire cat
 - Add button to deliver treat
-- Kill raspistill program when turned off
 
 
 # Bugs

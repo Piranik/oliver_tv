@@ -57,7 +57,7 @@ function startStreaming(io) {
     return;
   }
 
-  var args = ["-w", "480", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "200"];
+  var args = ["-w", "480", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100","-rot","180"];
   proc = spawn('raspistill', args);
 
   console.log('Watching for changes...');
@@ -69,3 +69,21 @@ function startStreaming(io) {
   })
 
 }
+
+process.stdin.resume();//so the program will not close instantly
+
+function exitHandler(options, err) {
+    if (options.cleanup) spawn('pkill raspistill');
+    if (err) console.log(err.stack);
+    if (options.exit) process.exit();
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
