@@ -26,6 +26,10 @@ logging.basicConfig(
     datefmt='%m-%d %H:%M:%S',
     handlers=[
         logging.StreamHandler()])
+
+    
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 # Patch because basestring doesn't work for crossdomain()
 # https://github.com/oxplot/fysom/issues/1
 try:
