@@ -66,7 +66,8 @@ function startStreaming(io) {
 
   app.set('watchingFile', true);
 
-  fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
+  //fs.watchFile('./stream/image_stream.jpg', 
+  setInterval(function(current, previous) {
 	console.log('emitting..');
 	var cp = require("child_process");
 	cp.exec("compare -metric mae ./background/notpresent2.jpg ./stream/image_stream.jpg ./stream/difference.png", function (err, stdout, stderr) {
@@ -80,7 +81,7 @@ function startStreaming(io) {
 	});
 	
 	io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-  })
+  },1000);
 
 }
 
