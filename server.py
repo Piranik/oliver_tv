@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, make_response, current_app, render_template, url_for, redirect, send_from_directory, Response
 import logging
-import builtins
 import time
 import copy
 import json
@@ -96,6 +95,17 @@ def crossdomain(origin=None, methods=None, headers=None,
 @app.route("/")
 def landing():
     return render_template('index.html')
+
+@app.route("/img", methods=['GET'])
+def imageserve():
+    os.system('cp ./static/new.jpg ./static/test.jpg')
+    img_size = os.path.getsize('./static/test.jpg')
+    new = False
+    if img_size > 100000:
+        os.system('cp ./static/test.jpg ./static/image_stream.jpg')
+        new = True
+    payload = {'src':'/static/image_stream.jpg','time':time.time(),'newimage':new}
+    return jsonify(result=payload)
     
 if __name__ == "__main__":
     """Main app

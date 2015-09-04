@@ -32,7 +32,7 @@
 
   <hr>
 
-   <div id=main>
+   <div id='main'>
 
  <img src='/static/image_stream.jpg' width="100%"/>
  </div>
@@ -46,9 +46,13 @@ function get_image() {
     $.ajax({
     type: 'GET',
     cache: false,
-    url: 'get_data',
-    success: function({{data}}) {
-    $('img').attr('src', data);  
+    url: '/img',
+    success: function(data) {
+var d = new Date();
+console.log(data);
+if (data['result'].newimage == true) {
+    $('#main img').attr('src', data['result'].src);
+}
     }
     });
 }
