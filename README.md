@@ -2,7 +2,13 @@
 
 # Plan to REDO in Python
 
-nump.sum(nump.square(imarray4.astype(int)-imarray5.astype(int)))
+import Image
+import numpy as np
+im = Image.open('...')
+imarray1 = np.array(im)
+im = Image.open('...')
+imarray2 = np.array(im)
+nump.sum(nump.square(imarray1.astype(int)-imarray2.astype(int)))
 
 
 A NodeJS application that allows you to stream your cat onto a webserver using a Raspberry Pi. It is somewhat based off the [RPi-KittyCam](https://github.com/schollz/RPi-KittyCam) and [This IoT article on streaming from Rpis](http://thejackalofjavascript.com/rpi-live-streaming).
