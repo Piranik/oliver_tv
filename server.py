@@ -3,7 +3,7 @@ import time
 import copy
 import json
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 import Image
@@ -123,6 +123,11 @@ def imageserve():
             print('new image!')
             os.system('cp ./static/test.jpg ./static/image_stream.jpg')
             new = True
+            with open('activity.txt','a') as f:
+                hour = float(datetime.now().hour) + float(datetime.now().minute)/60.0 + float(datetime.now().second)/(60.0*60.0)
+                f.write(str(hour))
+                f.write('\n')
+                
     payload = {'src':'/static/image_stream.jpg?foo='+str(int(time.time())),'time':time.time(),'newimage':new}
     return jsonify(result=payload)
     
