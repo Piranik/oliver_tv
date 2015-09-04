@@ -93,8 +93,7 @@ def crossdomain(origin=None, methods=None, headers=None,
         return update_wrapper(wrapped_function, f)
     return decorator
 
-7966277
-764394180
+
 @app.route("/")
 def landing():
     return render_template('index.html')
@@ -105,7 +104,6 @@ def imageserve():
     img_size = os.path.getsize('./static/test.jpg')
     new = False
     if img_size > 0.5*(640*480):
-        print(img_size)
         im1 = Image.open('./static/test.jpg')
         im2 = Image.open('./static/image_stream.jpg')
         imarray1 = np.array(im1)
