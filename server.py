@@ -1,12 +1,15 @@
-from flask import Flask, request, jsonify, make_response, current_app, render_template, url_for, redirect, send_from_directory, Response
-import Image
-import numpy as np
 import logging
 import time
 import copy
 import json
 import os
 from datetime import timedelta
+
+
+import Image
+import numpy as np
+from flask import Flask, request, jsonify, make_response, current_app, render_template, url_for, redirect, send_from_directory, Response
+from flask.ext.compress import Compress
 
 __author__ = "Zack Scholl"
 __copyright__ = "Copyright 2015, FIND"
@@ -42,6 +45,8 @@ else:
 
 
 app = Flask(__name__)
+Compress(app)
+app.config['COMPRESS_MIMETYPES'] = ['text/html', 'text/css', 'text/xml', 'application/json','application/javascript','image/jpeg']
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -114,7 +119,7 @@ def imageserve():
             print('new image!')
             os.system('cp ./static/test.jpg ./static/image_stream.jpg')
             new = True
-    payload = {'src':'/static/image_stream.jpg','time':time.time(),'newimage':new}
+    payload = {'src':'/static/image_stream.jpg?foo='+str(int(time.time())),'time':time.time(),'newimage':new}
     return jsonify(result=payload)
     
 if __name__ == "__main__":
