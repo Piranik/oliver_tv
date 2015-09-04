@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
@@ -11,8 +12,9 @@ var proc;
 app.use('/', express.static(path.join(__dirname, 'stream')));
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+	  res.sendFile(__dirname + '/index.html');
 });
+
 
 var sockets = {};
 
@@ -58,14 +60,26 @@ function startStreaming(io) {
   }
 
   var args = ["-w", "480", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100","-rot","180"];
-  proc = spawn('raspistill', args);
+  //proc = spawn('raspistill', args);
 
   console.log('Watching for changes...');
 
   app.set('watchingFile', true);
 
   fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+	console.log('emitting..');
+	var cp = require("child_process");
+	cp.exec("compare -metric mae ./background/notpresent2.jpg ./stream/image_stream.jpg ./stream/difference.png", function (err, stdout, stderr) {
+		console.log(stderr);	
+
+		var regExp = /\(([^)]+)\)/;
+  		var matches = regExp.exec(stderr);
+		if (matches[1]>0.05) {
+			console.log('Oliver is present!');
+		}
+	});
+	
+	io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
   })
 
 }
