@@ -105,7 +105,34 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 @app.route("/")
 def landing():
-    return render_template('index.html')
+    act = []
+    with open('activity.txt','r') as f:
+        for line in f:
+            act.append(float(line)) 
+
+    act = np.array(act)
+    print(act)
+
+    previous = 0
+    hours = []
+    nums = []
+    for i in range(1,24*4+1,1):
+        j = float(i)/4.0
+        smaller = list(np.where(act<j)[0])
+        larger = list(np.where(act>previous)[0])
+        both = list(set(smaller) & set(larger))
+        hours.append(str(j))
+        nums.append(str(len(both)))
+        previous = j
+
+
+    data = {}
+    data['hours'] = "'" + "', '".join(hours) + "'"
+    data['vals'] = ','.join(nums)
+    print(data)
+
+    return render_template('index.html', data = data)
+
 
 @app.route("/img", methods=['GET'])
 def imageserve():
@@ -118,7 +145,7 @@ def imageserve():
         imarray1 = np.array(im1)
         imarray2 = np.array(im2)
         diff = np.sum(np.square(imarray1.astype(int)-imarray2.astype(int)))
-        if diff > 325*(640*480):
+        if diff > 500*(640*480):
             print(diff)
             print('new image!')
             os.system('cp ./static/test.jpg ./static/image_stream.jpg')
