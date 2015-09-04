@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify, make_response, current_app, render_template, url_for, redirect, send_from_directory, Response
+import Image
+import numpy as np
 import logging
 import time
 import copy
@@ -91,7 +93,8 @@ def crossdomain(origin=None, methods=None, headers=None,
         return update_wrapper(wrapped_function, f)
     return decorator
 
-
+7966277
+764394180
 @app.route("/")
 def landing():
     return render_template('index.html')
@@ -101,9 +104,18 @@ def imageserve():
     os.system('cp ./static/new.jpg ./static/test.jpg')
     img_size = os.path.getsize('./static/test.jpg')
     new = False
-    if img_size > 100000:
-        os.system('cp ./static/test.jpg ./static/image_stream.jpg')
-        new = True
+    if img_size > 0.5*(640*480):
+        print(img_size)
+        im1 = Image.open('./static/test.jpg')
+        im2 = Image.open('./static/image_stream.jpg')
+        imarray1 = np.array(im1)
+        imarray2 = np.array(im2)
+        diff = np.sum(np.square(imarray1.astype(int)-imarray2.astype(int)))
+        if diff > 325*(640*480):
+            print(diff)
+            print('new image!')
+            os.system('cp ./static/test.jpg ./static/image_stream.jpg')
+            new = True
     payload = {'src':'/static/image_stream.jpg','time':time.time(),'newimage':new}
     return jsonify(result=payload)
     
