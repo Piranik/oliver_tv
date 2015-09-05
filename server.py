@@ -129,14 +129,33 @@ def landing():
     data = {}
     print(hours)
     for i in range(len(hours)):
+        print(hours[i])
         if '.0' in hours[i]:
             hourNum = int(math.floor(float(hours[i])))
             if hourNum <= 12:
                 hours[i] = str(hourNum) + ' AM'
             else:
                 hours[i] = str(hourNum-12) + ' PM'
+        elif '.5' in hours[i]:
+            hourNum = int(math.floor(float(hours[i])))
+            if hourNum <= 12:
+                hours[i] = str(hourNum) + ':30 AM'
+            else:
+                hours[i] = str(hourNum-12) + ':30 PM'
+        elif '.75' in hours[i]:
+            hourNum = int(math.floor(float(hours[i])))
+            if hourNum <= 12:
+                hours[i] = str(hourNum) + ':45 AM'
+            else:
+                hours[i] = str(hourNum-12) + ':45 PM'
+        elif '.25' in hours[i]:
+            hourNum = int(math.floor(float(hours[i])))
+            if hourNum <= 12:
+                hours[i] = str(hourNum) + ':15 AM'
+            else:
+                hours[i] = str(hourNum-12) + ':15 PM'
         else:
-            hours[i] = '  '
+            hours[i] = ' a'
 
     data['hours'] = "'" + "', '".join(hours) + "'"
     data['vals'] = ','.join(nums)
