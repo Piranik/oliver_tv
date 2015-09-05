@@ -20,7 +20,7 @@
   </style>
 
   <!-- jQuery -->
-  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <!-- Bootstrap JavaScript -->
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -34,6 +34,9 @@
     <small>Powered by PI</small>
   </h1>
 
+
+<hr>
+
   <hr>
 
    <div id='main'>
@@ -44,7 +47,7 @@
  <div id='test'>
 <p>
 <script>
-var myVar=setInterval(function(){get_image()},1000);
+var myVar=setInterval(function(){get_image()},100000);
 
 function get_image() {
     $.ajax({
@@ -82,8 +85,7 @@ $(function () {
         xAxis: {
             categories: [
                 {{ data['hours'] | safe }}
-            ],
-            crosshair: true
+            ]
         },
         yAxis: {
             min: 0,
@@ -107,7 +109,7 @@ $(function () {
         },
         series: [{
             name: 'Window position',
-            data: [{{ data['vals'] }}]
+            data: [{{ data['vals'] | safe }}]
 
         }]
     });
