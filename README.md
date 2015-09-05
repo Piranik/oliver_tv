@@ -10,5 +10,9 @@ If you don't want to host on the Pi use SSH FS, e.g.
 sshfs name@mainserver:/location/of/oliver_tv/static mount
 ```
 
-And then you can just run ```nohup pythone takePicture &``` on the Pi and on the server run ```nohup python server.py &```.
+And then you can just run ```nohup pythone takePicture &``` on the Pi and on the server run ```nohup python server.py &```. Or, if you're using ```forever```,
+
+```bash
+forever start -c python server.py
+```
 
