@@ -111,7 +111,6 @@ def landing():
             act.append(float(line)) 
 
     act = np.array(act)
-    print(act)
 
     previous = 0
     hours = []
@@ -127,9 +126,7 @@ def landing():
 
 
     data = {}
-    print(hours)
     for i in range(len(hours)):
-        print(hours[i])
         if '.0' in hours[i]:
             hourNum = int(math.floor(float(hours[i])))
             if hourNum <= 12:
@@ -159,7 +156,6 @@ def landing():
 
     data['hours'] = "'" + "', '".join(hours) + "'"
     data['vals'] = ','.join(nums)
-    print(data)
 
     return render_template('index.html', data = data)
 
@@ -176,7 +172,6 @@ def imageserve():
         imarray2 = np.array(im2)
         diff = np.sum(np.square(imarray1.astype(int)-imarray2.astype(int)))
         if diff > 500*(640*480):
-            print(diff)
             print('new image!')
             os.system('cp ./static/test.jpg ./static/image_stream.jpg')
             new = True
