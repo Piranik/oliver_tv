@@ -109,7 +109,18 @@ def landing():
     with open('activity.txt','r') as f:
         for line in f:
             act.append(float(line)) 
+            num = float(line)
+            nums = [-3,2,1,0,1,2,3]
+            times = [1,2,4,5,4,2,1]
+            for i in range(len(nums)):
+                newNum = num-nums[i]
+                if newNum > 0 and newNum < 24:
+                    for j in range(times[i]):
+                        act.append(newNum)
+            
+                
 
+    numActions = len(act)
     act = np.array(act)
 
     previous = 0
@@ -121,7 +132,7 @@ def landing():
         larger = list(np.where(act>previous)[0])
         both = list(set(smaller) & set(larger))
         hours.append(str(j))
-        nums.append(str(len(both)))
+        nums.append(str(100.0*len(both)/numActions))
         previous = j
 
 
@@ -139,24 +150,30 @@ def landing():
             hourNum = int(math.floor(float(hours[i])))
             if hourNum == 0:
                 hours[i] = str(hourNum+12) + ':30 AM'
-            elif hourNum <= 12:
+            elif hourNum < 12:
                 hours[i] = str(hourNum) + ':30 AM'
+            elif hourNum == 12:
+                hours[i] = str(hourNum) + ':30 PM'
             else:
                 hours[i] = str(hourNum-12) + ':30 PM'
         elif '.75' in hours[i]:
             hourNum = int(math.floor(float(hours[i])))
             if hourNum == 0:
                 hours[i] = str(hourNum+12) + ':45 AM'
-            elif hourNum <= 12:
+            elif hourNum < 12:
                 hours[i] = str(hourNum) + ':45 AM'
+            elif hourNum == 12:
+                hours[i] = str(hourNum) + ':45 PM'
             else:
                 hours[i] = str(hourNum-12) + ':45 PM'
         elif '.25' in hours[i]:
             hourNum = int(math.floor(float(hours[i])))
             if hourNum == 0:
                 hours[i] = str(hourNum+12) + ':15 AM'
-            elif hourNum <= 12:
+            elif hourNum < 12:
                 hours[i] = str(hourNum) + ':15 AM'
+            elif hourNum == 12:
+                hours[i] = str(hourNum) + ':15 PM'
             else:
                 hours[i] = str(hourNum-12) + ':15 PM'
         else:
