@@ -170,10 +170,11 @@ def landing():
 
 connected = {}
 lastSeen = time.time()
+lastSeenCount = 0
 
 @app.route("/img", methods=['GET'])
 def imageserve():
-    global lastSeen
+    global lastSeen, lastSeenCount
     os.system('cp ./static/new.jpg ./static/test.jpg')
     img_size = os.path.getsize('./static/test.jpg')
     new = False
@@ -204,7 +205,10 @@ def imageserve():
                 hour = float(datetime.now().hour) + float(datetime.now().minute)/60.0 + float(datetime.now().second)/(60.0*60.0)
                 f.write(str(hour))
                 f.write('\n')
-            lastSeen = time.time()
+            lastSeenCount += 1
+            if lastSeenCount > 10:
+                lastSeen = time.time()
+                lastSeenCount = 0
     
     lastSeenTime = time.time()-lastSeen
     if lastSeenTime < 60:
