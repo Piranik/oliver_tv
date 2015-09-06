@@ -168,11 +168,25 @@ def landing():
     return render_template('index.html', data = data)
 
 
+connected = {}
+
 @app.route("/img", methods=['GET'])
 def imageserve():
     os.system('cp ./static/new.jpg ./static/test.jpg')
     img_size = os.path.getsize('./static/test.jpg')
     new = False
+
+    try:
+        uuid = request.args.get('uuid')
+        connected[uuid] = time.time()
+    except:
+        pass
+    
+    for key in connected.keys():
+        if time.time()-connected[key] > 2:
+            del connected[key]
+
+    
     if img_size > 0.5*(640*480):
         im1 = Image.open('./static/test.jpg')
         im2 = Image.open('./static/image_stream.jpg')
@@ -188,7 +202,7 @@ def imageserve():
                 f.write(str(hour))
                 f.write('\n')
                 
-    payload = {'src':'/static/image_stream.jpg?foo='+str(int(time.time())),'time':time.time(),'newimage':new}
+    payload = {'src':'/static/image_stream.jpg?foo='+str(int(time.time())),'time':time.time(),'newimage':new,'connected':len(connected.keys())}
     return jsonify(result=payload)
     
 if __name__ == "__main__":
