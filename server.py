@@ -169,9 +169,11 @@ def landing():
 
 
 connected = {}
+lastSeen = time.time()
 
 @app.route("/img", methods=['GET'])
 def imageserve():
+    global lastSeen
     os.system('cp ./static/new.jpg ./static/test.jpg')
     img_size = os.path.getsize('./static/test.jpg')
     new = False
@@ -187,6 +189,7 @@ def imageserve():
             del connected[key]
 
     
+    
     if img_size > 0.5*(640*480):
         im1 = Image.open('./static/test.jpg')
         im2 = Image.open('./static/image_stream.jpg')
@@ -201,8 +204,19 @@ def imageserve():
                 hour = float(datetime.now().hour) + float(datetime.now().minute)/60.0 + float(datetime.now().second)/(60.0*60.0)
                 f.write(str(hour))
                 f.write('\n')
-                
-    payload = {'src':'/static/image_stream.jpg?foo='+str(int(time.time())),'time':time.time(),'newimage':new,'connected':len(connected.keys())}
+            lastSeen = time.time()
+    
+    lastSeenTime = time.time()-lastSeen
+    if lastSeenTime < 60:
+        lastSeenTime = " less than a minute ago."
+    elif lastSeenTime < 60*60:
+        lastSeenTime = str(int(lastSeenTime/60)) + " minutes ago."
+    elif lastSeenTime < 60*60*24:
+        lastSeenTime = str(int(lastSeenTime/(60*60))) + " hours ago."
+    else:
+        lastSeenTime = str(int(lastSeenTime/(60*60*24))) + " days ago."
+    
+    payload = {'src':'/static/image_stream.jpg?foo='+str(int(time.time())),'time':time.time(),'newimage':new,'connected':len(connected.keys()),'lastSeen':lastSeenTime}
     return jsonify(result=payload)
     
 if __name__ == "__main__":

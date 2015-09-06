@@ -50,6 +50,7 @@
     <small>Powered by PI</small>
   </h1>
 <h3 class="text-center" id='num_connected'>Currently 1 connected</h3>
+<h3 class="text-center" id='last_seen'>Last seen...</h3>
 
 
 
@@ -84,6 +85,9 @@ if (data['result'].newimage == true) {
     $('#main img').attr('src', data['result'].src);
 }
 $('#num_connected').text("Currently " + data['result'].connected + " connected.")
+$('#last_seen').text("Last seen " + data['result'].lastSeen)
+
+
     }
     });
 }
